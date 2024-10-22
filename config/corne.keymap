@@ -7,7 +7,7 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <layouts/foostan/corne/5column.dtsi>
+// #include <layouts/foostan/corne/5column.dtsi>
 
 // Custom layers
 #define DEFAULT  0
@@ -15,11 +15,15 @@
 #define SYSTEM   2
 #define KEYBOARD 3
 
-&foostan_corne_5col_layout {
-    transform = <&default_transform>;
-};
+// &foostan_corne_5col_layout {
+//     transform = <&default_transform>;
+// };
 
 / {
+    chosen {
+      zmk,matrix_transform = &five_column_transform;
+    };
+
     behaviors {
         morph_PLAY_STOP: morph_PLAY_STOP {
             compatible = "zmk,behavior-mod-morph";
