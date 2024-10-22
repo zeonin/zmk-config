@@ -134,10 +134,10 @@
             // | RESET  |        |        |        | BOOT   |   | BOOT |      |      |     | RESET |
             //                 |        |        | XXXXXX |   | XXXX |      |      |
             bindings = <
-                &kp BT_CLR   &none        &none        &none        &none        &none      &none            &none      &none  &none
-                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none      &none            &none      &none  &none
-                &sys_reset   &none        &none        &none        &bootloader  &bootlader &none            &none      &none  &sys_reset
-                                          &trans       &trans       &trans       &trans     &trans           &trans
+                &kp BT_CLR   &none        &none        &none        &none        &none       &none            &none      &none  &none
+                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none       &none            &none      &none  &none
+                &sys_reset   &none        &none        &none        &bootloader  &bootloader &none            &none      &none  &sys_reset
+                                          &trans       &trans       &trans       &trans      &trans           &trans
             >;
         };
     };
