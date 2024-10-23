@@ -165,7 +165,7 @@
             //                    | VVVVVVVVV | VVVVVVVV | VVVVVV  |   | VVVVVV | VVVVVVVV | VVVVVV |
             bindings = <
                 &mt LCTRL F1 &mt LALT F2 &mt LGUI F3     &mt LSHIFT F4 &kp F5        &kp F6       &mt LSHIFT F7 &mt LGUI F8 &mt LALT F9 &mt LCTRL F10
-                &kp TAB      &kp PSCRN   &kp RETURN      &pk ESC       &none         &kp LEFT     &kp DOWN      &kp UP      &kp RIGHT   &kp F11
+                &kp TAB      &kp PSCRN   &kp RETURN      &kp ESC       &none         &kp LEFT     &kp DOWN      &kp UP      &kp RIGHT   &kp F11
                 &kp DEL      &kp INSERT  &kp PAUSE_BREAK &none         &sl KBD       &kp HOME     &kp PG_DN     &kp PG_UP   &kp END     &kp F12
                                          &trans          &trans        &trans        &trans       &trans        &trans
             >;
