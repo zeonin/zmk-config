@@ -13,8 +13,9 @@
 #define DEFAULT  0
 #define NUM      1
 #define SYM      2
-#define COM      3
-#define KBD      4
+#define CMD      3
+#define PC       4
+#define KBD      5
 
 // &foostan_corne_5col_layout {
 //     transform = <&default_transform>;
@@ -63,6 +64,29 @@
             bindings = <&morph_VOLUME>, <&morph_BRIGHTNESS>;
             mods = <(MOD_LGUI)>;
         };
+
+        td_play: tap_dance_play {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <300>;
+            bindings = <&kp C_PLAY_PAUSE>, <&kp C_REPEAT>, <&kp C_SHUFFLE>;
+        };
+
+        td_pwr: tap_dance_power {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <300>;
+            bindings = <&as C_AL_LOGOFF C_AL_LOCK>, <&kp C_POWER>;
+        };
+
+        as: auto_shift {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping_term_ms = <135>;
+            quick_tap_ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     conditional_layers {
@@ -77,7 +101,7 @@
         compatible = "zmk,keymap";
 
         default_layer {
-            display-name = "";
+            display-name = "🔠";
             // -----------------------------------------------------------------------------------
             // |  '  |  ,  |  .      |  P   |  Y      |   |  F      |  G    |  C     |  R  |  L  |
             // |  A  |  O  |  E      |  U   |  I      |   |  D      |  H    |  T     |  N  |  S  |
@@ -91,7 +115,7 @@
             >;
         };
         number_layer {
-            display-name = "NUM";
+            display-name = "🔢";
             // -----------------------------------------------------------------
             // |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  |
             // |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
@@ -105,40 +129,49 @@
             >;
         };
         symbol_layer {
-            display-name = "SYM";
+            display-name = "🔣";
             // -----------------------------------------------------------------
             // |  ~  |  `  |  {  |  (  |  [  |   |  ]  |  )  |  }  |  ?  |  /  |
             // |     |     |     |     |  -  |   |  _  |  +  |  =  |  \  |  |  |
             // |     |     |     |     |     |   |     |     |     |     |     |
             //             | VVV | VVV | VVV |   | VVV | VVV | VVV |
             bindings = <
-                &kp TILDE &kp GRAVE &kp LBRC &kp LPAR &kp LBKT  &kp RBKT  &kp RPAR &kp RBRC  &kp QMARK &kp SLASH
-                &none     &none     &none    &none    &kp MINUS &kp UNDER &kp PLUS &kp EQUAL &kp BSLH  &kp PIPE
-                &none     &none     &none    &none    &none     &none     &none    &none     &none     &none 
-                                    &trans   &trans   &trans    &trans    &trans   &trans
+                &kp TILDE &kp GRAVE &kp LBRC &kp LPAR &kp LBKT  &kp RBKT  &kp RPAR      &kp RBRC  &kp QMARK &kp SLASH
+                &none     &none     &none    &none    &kp MINUS &kp UNDER &kp PLUS      &kp EQUAL &kp BSLH  &kp PIPE
+                &none     &none     &none    &none    &none     &none     &none         &none     &none     &none 
+                                    &trans   &trans   &trans    &trans    &lt CMD SPACE &trans
+            >;
+        };
+        command_layer {
+            display-name = "🎶";
+            // --------------------------------------------------------------------------------------------------------------------
+            // | TASK_MGR   | PREV_TASK  | NEXT_TASK | CALENDAR | JOURNAL |   |        |          |        |            | POWER   |
+            // | BRI_DN/MIN | BRI_UP/MAX | VOL_DN    | VOL_UP   |         |   |        | <<  |<<  | PP/R/S | EJECT/STOP | >>  >>| |
+            // | BRI_AUTO   | BKLT_TOG   | VOL_MUTE  | PRINT    |         |   |        |          |        |            |         |
+            //                           | VVVVVVVVV | VVVVVVVV | VVVVVVV |   | VVVVVV | VVVVVVVV | VVVVVV |
+            bindings = <
+                &kp C_AL_TASK_MANAGER  &kp C_AL_PREV_TASK     &kp C_AL_NEXT_TASK &kp C_AL_CAL &kp C_AL_JOURNAL &none  &none           &none       &none              &td_pwr
+                &as C_BRI_MIN C_BRI_DN &as C_BRI_MAX C_BRI_UP &kp C_VOL_DN       &kp C_VOL_UP &none            &none  &mt C_RW C_PREV &td_play    &as C_EJECT C_STOP &mt C_FF C_NEXT
+                &kp C_BRI_AUTO         &kp C_BKLT_TOG         &kp C_MUTE         &kp F20      &none            &none  &none           &none       &none              &none
+                                                              &trans             &trans       &trans           &trans &trans          &trans
             >;
         };
         computer_layer {
-            // keycombos:
-            // GUI + SHIFT + MEDIA
-            // GUI + SHIFT + OUTPUT
-            // CTRL + ALT + DEL
-            // ALT + F4
-            display-name = "COM";
-            // ---------------------------------------------------------------------------------------------------------
-            // | CTRL/F1 | ALT/F2 | GUI/F3    | SHIFT/F4 | F5     |   | F6     | SHIFT/F7 | GUI/F8 | ALT/F9 | CTRL/F10 |
-            // | TAB     | RETURN | ESC       | MEDIA    | OUTPUT |   | LEFT   | DOWN     | UP     | RIGHT  | F11      |
-            // | DEL     | INSERT | PAUSE     | PRINT    |        |   | HOME   | PG_DN    | PG_UP  | END    | F12      |
-            //                    | VVVVVVVVV | VVVVVVVV | VVVVVV |   | VVVVVV | VVVVVVVV | VVVVVV |
+            display-name = "💻";
+            // ----------------------------------------------------------------------------------------------------------
+            // | CTRL/F1 | ALT/F2 | GUI/F3    | SHIFT/F4 | F5      |   | F6     | SHIFT/F7 | GUI/F8 | ALT/F9 | CTRL/F10 |
+            // | TAB     | PSCRN  | RETURN    | ESC      |         |   | LEFT   | DOWN     | UP     | RIGHT  | F11      |
+            // | DEL     | INSERT | PAUSE     |          | SL(KBD) |   | HOME   | PG_DN    | PG_UP  | END    | F12      |
+            //                    | VVVVVVVVV | VVVVVVVV | VVVVVV  |   | VVVVVV | VVVVVVVV | VVVVVV |
             bindings = <
                 &mt LCTRL F1 &mt LALT F2 &mt LGUI F3     &mt LSHIFT F4 &kp F5        &kp F6       &mt LSHIFT F7 &mt LGUI F8 &mt LALT F9 &mt LCTRL F10
-                &kp TAB      &kp RETURN  &kp ESC         &morph_media  &morph_output &kp LEFT     &kp DOWN      &kp UP      &kp RIGHT   &kp F11
-                &kp DEL      &kp INSERT  &kp PAUSE_BREAK &kp PSCRN     &sl KBD       &kp HOME     &kp PG_DN     &kp PG_UP   &kp END     &kp F12
+                &kp TAB      &kp PSCRN   &kp RETURN      &pk ESC       &none         &kp LEFT     &kp DOWN      &kp UP      &kp RIGHT   &kp F11
+                &kp DEL      &kp INSERT  &kp PAUSE_BREAK &none         &sl KBD       &kp HOME     &kp PG_DN     &kp PG_UP   &kp END     &kp F12
                                          &trans          &trans        &trans        &trans       &trans        &trans
             >;
         };
         keyboard_layer {
-            display-name = "KBD";
+            display-name = "⌨️";
             // -----------------------------------------------------------------------------
             // | BT_CLR |      |      |      |      |   |      |      |      |     |       |
             // | BT 0   | BT 1 | BT 2 | BT 3 | BT 4 |   |      |      |      |     |       |
