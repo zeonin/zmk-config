@@ -11,9 +11,10 @@
 
 // Custom layers
 #define DEFAULT  0
-#define NUMSYM   1
-#define SYSTEM   2
-#define KEYBOARD 3
+#define NUM      1
+#define SYM      2
+#define COM      3
+#define KBD      4
 
 // &foostan_corne_5col_layout {
 //     transform = <&default_transform>;
@@ -67,8 +68,8 @@
     conditional_layers {
         compatible = "zmk,conditional-layers";
         tri_layer {
-            if-layers = <NUMSYM SYSTEM>;
-            then-layer = <KEYBOARD>;
+            if-layers = <NUM SYM>;
+            then-layer = <COM>;
         };
     };
 
@@ -76,54 +77,73 @@
         compatible = "zmk,keymap";
 
         default_layer {
-            display-name = "Base";
-            // --------------------------------------------------------------------------------------------------
-            // |  '  |  ,  |  .       |  P       |  Y         |   |  F     |  G        |  C          |  R  |  L  |
-            // |  A  |  O  |  E       |  U       |  I         |   |  D     |  H        |  T          |  N  |  S  |
-            // |  ;  |  Q  |  J       |  K       |  X         |   |  B     |  M        |  W          |  V  |  Z  |
-            //             | TAB/ALT  | BSPC/GUI | ESC/NUMSYM |   | SYSTEM | SHIFT/SPC | CTRL/RETURN |
+            display-name = ":-)";
+            // -----------------------------------------------------------------------------------
+            // |  '  |  ,  |  .      |  P   |  Y      |   |  F      |  G    |  C     |  R  |  L  |
+            // |  A  |  O  |  E      |  U   |  I      |   |  D      |  H    |  T     |  N  |  S  |
+            // |  ;  |  Q  |  J      |  K   |  X      |   |  B      |  M    |  W     |  V  |  Z  |
+            //             | GUI/ESC | BSPC | SYM/TAB |   | NUM/RET | SPACE | LSHIFT |
             bindings = <
-                &kp SQT        &kp COMMA &kp DOT       &kp P         &kp Y          &kp F              &kp G            &kp C            &kp R &kp L
-                &kp A          &kp O     &kp E         &kp U         &kp I          &kp D              &kp H            &kp T            &kp N &kp S
-                &mt LCTRL SEMI &kp Q     &kp J         &kp K         &kp X          &kp B              &kp M            &kp W            &kp V &kp Z
-                                         &mt LGUI ESC  &kp BSPC      &lt SYSTEM TAB &lt NUMSYM RETURN  &kp SPACE        &kp LSHIFT
+                &kp SQT        &kp COMMA &kp DOT       &kp P         &kp Y       &kp F           &kp G            &kp C            &kp R &kp L
+                &kp A          &kp O     &kp E         &kp U         &kp I       &kp D           &kp H            &kp T            &kp N &kp S
+                &mt LCTRL SEMI &kp Q     &kp J         &kp K         &kp X       &kp B           &kp M            &kp W            &kp V &kp Z
+                                         &mt LGUI ESC  &kp BSPC      &lt SYM TAB &lt NUM RETURN  &kp SPACE        &kp LSHIFT
             >;
         };
-        numsym_layer {
-            display-name = "NumSym";
-            // -----------------------------------------------------------------------------------------
-            // |  `  |     | =        |  [  |  =     |   |  \     |  ]       |  -          |     |  /  |
-            // |  1  |  2  | 3        |  4  |  5     |   |  6     |  7       |  8          |  9  |  0  |
-            // |     |     |          | TAB |        |   |        |          |             |     |     |
-            //             | BSPC/GUI | SHF | NUMSYM |   | SYSTEM | CTRL/SPC | ALT/RETURN  |
+        number_layer {
+            display-name = "NUM";
+            // -----------------------------------------------------------------
+            // |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  |
+            // |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
+            // |     |     |     | RET |     |   |     |  +  |  -  |  /  |     |
+            //             | VVV | VVV | VVV |   | VVV | VVV | VVV |
             bindings = <
-                &kp GRAVE &none  &kp EQUAL  &kp LBKT &kp EQUAL &kp BSLH   &kp RBKT   &kp MINUS &none  &kp SLASH
-                &kp N1    &kp N2 &kp N3     &kp N4   &kp N5    &kp N6     &kp N7     &kp N8    &kp N9 &kp N0
-                &none     &none  &none      &kp TAB  &none     &none      &none      &none     &none  &none
-                                 &trans     &trans   &trans    &trans     &trans     &trans
+                &kp EXEL  &kp AT    &kp HASH  &kp DOLLAR &kp PERCENT &kp CARAT &kp AMPS  &kp STAR  &kp LPAR  &kp RPAR
+                &kp N1    &kp N2    &kp N3    &kp N4     &kp N5      &kp N6    &kp N7    &kp N8    &kp N9    &kp N0
+                &none     &none     &kp DOT   &kp RETURN &none       &none     &kp PLUS  &kp MINUS &kp SLASH &none
+                                    &trans    &trans     &trans      &trans    &trans    &trans
             >;
         };
-        system_layer {
-            display-name = "System";
-            // --------------------------------------------------------------------------------------------
-            // | F1    | F2     | F3        | F4     | F5     |   | F6     | F6    | F8   | F9    | F10   |
-            // |       | PG_UP  | PG_DN     | OUTPUT | MEDIA  |   |        | LEFT  | DOWN | UP    | RIGHT |
-            // |       | HOME   | END       | PRINT  | INSERT |   | SHIFT  | CTRL  | DEL  | F11   | F12   |
-            //                  | GUI       | ALT    | XXXXXX |   | XXXXXX |       |      |
+        symbol_layer {
+            display-name = "SYM";
+            // -----------------------------------------------------------------
+            // |  ~  |  `  |  {  |  (  |  [  |   |  ]  |  )  |  }  |  ?  |  /  |
+            // |     |     |     |     |  -  |   |  _  |  +  |  =  |  \  |  |  |
+            // |     |     |     |     |     |   |     |     |     |     |     |
+            //             | VVV | VVV | VVV |   | VVV | VVV | VVV |
             bindings = <
-                &kp F1 &kp F2       &kp F3    &kp F4        &kp F5       &kp F6     &kp F7    &kp F8   &kp F9  &kp F10
-                &none  &kp PG_UP    &kp PG_DN &morph_output &morph_media &none      &kp LEFT  &kp DOWN &kp UP  &kp RIGHT
-                &none  &kp HOME     &kp END   &kp PSCRN     &kp INSERT   &kp LSHIFT &kp LCTRL &kp DEL  &kp F11  &kp F12
-                                    &kp LGUI  &kp LALT      &trans       &trans     &trans    &trans
+                &kp TILDE &kp GRAVE &kp LBRC &kp LPAR &kp LBKT  &kp RBKT  &kp RPAR &kp RBRC  &kp QMARK &kp SLASH
+                &none     &none     &none    &none    &kp MINUS &kp UNDER &kp PLUS &kp EQUAL &kp BSLH  &kp PIPE
+                &none     &none     &none    &none    &none     &none     &none    &none     &none     &none 
+                                    &trans   &trans   &trans    &trans    &trans   &trans
+            >;
+        };
+        computer_layer {
+            // keycombos:
+            // GUI + SHIFT + MEDIA
+            // GUI + SHIFT + OUTPUT
+            // CTRL + ALT + DEL
+            // ALT + F4
+            display-name = "COM";
+            // ---------------------------------------------------------------------------------------------------------
+            // | CTRL/F1 | ALT/F2 | GUI/F3    | SHIFT/F4 | F5     |   | F6     | SHIFT/F7 | GUI/F8 | ALT/F9 | CTRL/F10 |
+            // | TAB     | RETURN | ESC       | MEDIA    | OUTPUT |   | LEFT   | DOWN     | UP     | RIGHT  | F11      |
+            // | DEL     | INSERT | PAUSE     | PRINT    |        |   | HOME   | PG_DN    | PG_UP  | END    | F12      |
+            //                    | VVVVVVVVV | VVVVVVVV | VVVVVV |   | VVVVVV | VVVVVVVV | VVVVVV |
+            bindings = <
+                &mt LCTRL F1 &mt LALT F2 &mt LGUI F3     &mt LSHIFT F4 &kp F5        &kp F6       &mt LSHIFT F7 &mt LGUI F8 &mt LALT F9 &mt LCTRL F10
+                &kp TAB      &kp RETURN  &kp ESC         &morph_media  &morph_output &kp LEFT     &kp DOWN      &kp UP      &kp RIGHT   &kp F11
+                &kp DEL      &kp INSERT  &kp PAUSE_BREAK &kp PSCRN     &sl KBD       &kp HOME     &kp PG_DN     &kp PG_UP   &kp END     &kp F12
+                                         &trans          &trans        &trans        &trans       &trans        &trans
             >;
         };
         keyboard_layer {
-            display-name = "Keyboard";
-            // -------------------------------------------------------------------------------------
-            // | BT_CLR |        |        |        |        |   |      |      |      |     |       |
-            // | BT 0   | BT 1   | BT 2   | BT 3   | BT 4   |   |      |      |      |     |       |
-            // | RESET  |        |        |        | BOOT   |   | BOOT |      |      |     | RESET |
-            //                 |        |        | XXXXXX |   | XXXX |      |      |
+            display-name = "KBD";
+            // -----------------------------------------------------------------------------
+            // | BT_CLR |      |      |      |      |   |      |      |      |     |       |
+            // | BT 0   | BT 1 | BT 2 | BT 3 | BT 4 |   |      |      |      |     |       |
+            // | RESET  |      |      |      | BOOT |   | BOOT |      |      |     | RESET |
+            //                 | VVVV | VVVV | VVVV |   | VVVV | VVVV | VVVV |
             bindings = <
                 &bt BT_CLR   &none        &none        &none        &none        &none       &none            &none      &none  &none
                 &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none       &none            &none      &none  &none
